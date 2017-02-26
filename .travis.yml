@@ -1,0 +1,30 @@
+language: cpp
+compiler: gcc
+sudo: require
+dist: trusty
+
+before_install:
+    - sudo add-apt-repository ppa:beineri/opt-qt58-trusty -y
+    - sudo apt-get update -qq
+    
+install: 
+    - sudo apt-get -y install libpulse0 qt58base qt58tools liblastfm-dev libtag1-dev gettext libboost-dev libboost-serialization-dev cmake libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libglew1.5-dev libqjson-dev libgpod-dev libplist-dev libusbmuxd-dev libmtp-dev libcdio-dev protobuf-compiler libprotobuf-dev libcrypto++-dev libfftw3-dev libsparsehash-dev libsqlite3-dev libpulse-dev libqtwebkit-dev libechonest-dev libchromaprint-dev libqca2-dev
+    - source /opt/qt58/bin/qt58-env.sh
+
+script:
+  - cd bin/
+  - cmake -DCMAKE_INSTALL_PREFIX=/usr ../
+  - make -j4
+  - sudo apt-get -y install checkinstall
+  - sudo checkinstall --pkgname=app --pkgversion="1" --pkgrelease="1" --backup=no --fstrans=no --default --deldoc 
+  - mkdir appdir ; cd appdir
+  - dpkg -x ../app_1-1_amd64.deb . ; find .
+  - cp ./usr/share/applications/clementine.desktop .
+  - cp ./usr/share/icons/hicolor/128x128/apps/clementine.png .
+  - cd .. 
+  - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" 
+  - chmod a+x linuxdeployqt*.AppImage
+  - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+  - ./linuxdeployqt*.AppImage ./appdir/usr/bin/clementine -bundle-non-qt-libs
+  - ./linuxdeployqt*.AppImage ./appdir/usr/bin/clementine -appimage 
+  - curl --upload-file ./Clementine*.AppImage https://transfer.sh/Clementine-git.$(git rev-parse --short HEAD)-x86_64.AppImage 
