@@ -15,9 +15,8 @@ install:
     - wget https://sqlite.org/2017/sqlite-autoconf-3160200.tar.gz
     - tar xf sqlite-autoconf-*.tar.gz
     - cd sqlite*
-    - ./configure --prefix=/usr --disable-static CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3_TOKENIZER=1 -DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_SECURE_DELETE=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1" && make && sudo make install
+    - ./configure --prefix=/usr --disable-static CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3_TOKENIZER" && make && sudo make install
     - make
-    - rm -rf /usr/lib/*/libsqlite3* || true
     - sudo make install
     - cd -
 
