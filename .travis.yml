@@ -8,10 +8,17 @@ before_install:
     - sudo apt-get update -qq
     
 install: 
-    - sudo apt-get -y install libpulse0 qt58base qt58x11extras qt58tools liblastfm-dev libtag1-dev gettext libboost-dev libboost-serialization-dev cmake libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libglew1.5-dev libqjson-dev libgpod-dev libplist-dev libusbmuxd-dev libmtp-dev libcdio-dev protobuf-compiler libprotobuf-dev libcrypto++-dev libfftw3-dev libsparsehash-dev libsqlite3-dev libpulse-dev libqtwebkit-dev libechonest-dev libchromaprint-dev libqca2-dev
+    - sudo apt-get -y install libpulse0 qt58base qt58x11extras qt58tools liblastfm-dev libtag1-dev gettext libboost-dev libboost-serialization-dev cmake libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libglew1.5-dev libqjson-dev libgpod-dev libplist-dev libusbmuxd-dev libmtp-dev libcdio-dev protobuf-compiler libprotobuf-dev libcrypto++-dev libfftw3-dev libsparsehash-dev libpulse-dev libqtwebkit-dev libechonest-dev libchromaprint-dev libqca2-dev
     - source /opt/qt58/bin/qt58-env.sh
-    - # TODO: Build sqlite with -DSQLITE_ENABLE_FTS3_TOKENIZER
-    - # BLOCKED BY https://github.com/clementine-player/Clementine/issues/5484#issuecomment-282595800
+    - # Build sqlite with -DSQLITE_ENABLE_FTS3_TOKENIZER
+    - # https://github.com/clementine-player/Clementine/issues/5484#issuecomment-282595800
+    - wget https://www.sqlite.org/2017/sqlite-autoconf-3170000.tar.gz
+    - tar xf sqlite-autoconf-3170000.tar.gz
+    - cd sqlite-autoconf-3170000/
+    - ./configure --prefix=/usr -DSQLITE_ENABLE_FTS3_TOKENIZER
+    - make
+    - sudo make install
+    - cd ..
 
 script:
   - cd bin/
