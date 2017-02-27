@@ -12,13 +12,13 @@ install:
     - source /opt/qt58/bin/qt58-env.sh
     - # Build sqlite with -DSQLITE_ENABLE_FTS3_TOKENIZER
     - # https://github.com/clementine-player/Clementine/issues/5484#issuecomment-282595800
-    - wget https://www.sqlite.org/2017/sqlite-autoconf-3170000.tar.gz
-    - tar xf sqlite-autoconf-3170000.tar.gz
-    - cd sqlite-autoconf-3170000/
-    - ./configure --prefix=/usr -DSQLITE_ENABLE_FTS3_TOKENIZER
+    - wget https://sqlite.org/2017/sqlite-autoconf-3160200.tar.gz
+    - tar xf sqlite-autoconf-*.tar.gz
+    - cd sqlite*
+    - ./configure --prefix=/usr --disable-static CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3_TOKENIZER=1 -DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_SECURE_DELETE=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1" && make && sudo make install
     - make
     - sudo make install
-    - cd ..
+    - cd -
 
 script:
   - cd bin/
