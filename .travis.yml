@@ -21,6 +21,8 @@ install:
     - cd -
 
 script:
+  - wget "https://patch-diff.githubusercontent.com/raw/clementine-player/Clementine/pull/5669.diff"
+  - patch -p0 < 5669.diff # 
   - cd bin/
   - cmake -DCMAKE_INSTALL_PREFIX=/usr ../
   - make -j4
